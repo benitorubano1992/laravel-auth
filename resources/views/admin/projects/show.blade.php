@@ -6,6 +6,13 @@
             <div>{{ $project->created_at }}</div>
             <div>{{ $project->slug }}</div>
         </div>
+        <div class="text-center my-3">
+            @if ($project->cover_image)
+                <img src="{{ asset('storage/' . $project->cover_image) }}" alt="immagine" class="w-50">
+            @else
+                <span>Not image yet</span>
+            @endif
+        </div>
         <div>{{ $project->content }}</div>
     </div>
 @endsection

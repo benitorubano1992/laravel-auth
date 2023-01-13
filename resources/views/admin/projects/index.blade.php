@@ -16,6 +16,7 @@
                 <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Data di Creazione</th>
+                    <th scope="col">Immagine</th>
                     <th scope="col">azioni</th>
                 </tr>
             </thead>
@@ -24,6 +25,15 @@
                     <tr>
                         <th scope="row">{{ $project->title }}</th>
                         <td>{{ $project->created_at }}</td>
+                        <td>
+                            @if ($project->cover_image)
+                                <img src="{{ asset('storage/' . $project->cover_image) }}" alt="immagine db" class="w-50">
+                            @else
+                                <div class="w-50 bg-secondary py-3 text-center">
+                                    Not image yet
+                                </div>
+                            @endif
+                        </td>
                         <td><a class="btn btn-info" href="{{ route('admin.projects.show', $project->slug) }}"
                                 role="button">Dettagli</a>
                             <a class="btn btn-warning" href="{{ route('admin.projects.edit', $project->slug) }}"

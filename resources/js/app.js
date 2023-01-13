@@ -20,3 +20,22 @@ btnDelete.forEach(btn => {
         modal.show();
     })
 })
+
+
+
+//image preview create
+
+const coverInput = document.getElementById("cover_image");
+
+coverInput.addEventListener('change', (e) => {
+    const uploadedFile = e.target.files[0];
+    console.log(uploadedFile);
+    if (uploadedFile) {
+        const reader = new FileReader();
+        reader.addEventListener('load', () => {
+            console.log(reader.result);
+            document.querySelector(".image-preview").innerHTML = `<img src="${reader.result}" alt="cover-image">`;
+        })
+        reader.readAsDataURL(uploadedFile);
+    }
+})

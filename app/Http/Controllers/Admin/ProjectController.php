@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -38,8 +39,14 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
+
         $form_data = $request->validated();
+
         $form_data['slug'] = Project::generateSlug($form_data['title']);;
+        if ($request->hasFile('cover_image')) {
+            $path = Storage::put('projects-images', $request->cover_image);
+            $form_data['cover_image'] = $path;
+        }
         $project = Project::create($form_data);
         return redirect()->route('admin.projects.index')->with('message', "il progetto $project->title è stato aggiunto correttamente");
     }
@@ -75,8 +82,17 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
+
         $form_data = $request->validated();
         $form_data['slug'] = Project::generateSlug($form_data['title']);
+        if ($request->hasFile('cover_image')) {
+            //cancellare immafine precedente
+            if ($project->cover_image) {
+                Storage::delete($project->cover_image);
+            }
+            $path = Storage::put('project-image', $request->cover_image);
+            $form_data['cover_image'] = $path;
+        }
         $project->update($form_data);
         return redirect()->route('admin.projects.index')->with('message', "il progettp con  titolo $project->title è stato aggiornato correttamente");
     }
