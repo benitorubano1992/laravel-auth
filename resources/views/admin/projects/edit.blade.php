@@ -21,45 +21,62 @@
             </div>
 
             <div class="mb-3">
-                <label for="cover_image">Immagine</label>
-                <input type="file" name="cover_image" id="cover_image"
-                    class="form-control @error('cover_image')
+                <label for="type_id">Type:</label>
+                <select class="form-select @error('type_id')
+                is-invalid
+                @enderror"
+                    aria-label="Default select example" name="type_id" id="type_id">
+                    <option value=""></option>
+                    @foreach ($types as $type)
+                        <option value="{{ $type->id }}" @selected(old('type_id', $project->type_id) == $type->id)>{{ $type->name }}</option>
+                    @endforeach
+
+
+                </select>
+
+
+
+
+                <div class="mb-3">
+                    <label for="cover_image">Immagine</label>
+                    <input type="file" name="cover_image" id="cover_image"
+                        class="form-control @error('cover_image')
                 is-invalid
                 @enderror">
-                @error('cover_image')
-                    <div class="invalid-feedback">
-                        {{ $message }}
+                    @error('cover_image')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                    <div class="mt-3 image-preview">
+                        @if ($project->cover_image)
+                            <img id="image_preview" src="{{ asset('storage/' . $project->cover_image) }}"
+                                alt="{{ 'Cover image di ' . $project->title }}">
+                        @endif
+
                     </div>
-                @enderror
-                <div class="mt-3 image-preview">
-                    @if ($project->cover_image)
-                        <img id="image_preview" src="{{ asset('storage/' . $project->cover_image) }}"
-                            alt="{{ 'Cover image di ' . $project->title }}">
-                    @endif
 
                 </div>
 
-            </div>
 
 
-
-            <div class="mb-3">
-                <label for="content" class="form-label">Content:</label>
-                <textarea name="content" id="content" cols="30" rows="10"
-                    class="form-control @error('content') 
+                <div class="mb-3">
+                    <label for="content" class="form-label">Content:</label>
+                    <textarea name="content" id="content" cols="30" rows="10"
+                        class="form-control @error('content') 
                 is-invalid
                 @enderror">{{ old('content', $project->content) }}</textarea>
-                @error('content')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                @enderror
+                    @error('content')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
 
 
 
-            </div>
+                </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
 
